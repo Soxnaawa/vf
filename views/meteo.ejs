@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Données Météo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h2>Données météo par région</h2>
+
+  <!-- Formulaire de recherche -->
+  <form method="GET" action="/meteo" style="margin-bottom: 20px;">
+    <input type="text" name="region" placeholder="Rechercher une région..." required>
+    <button type="submit">Rechercher</button>
+  </form>
+
+  <!-- Bouton pour réinitialiser -->
+  <% if (donnees.length > 0 && regionRecherchee) { %>
+    <a href="/meteo">Voir toutes les régions</a>
+  <% } %>
+
+  <% if (donnees.length === 0) { %>
+    <p>Aucune donnée disponible.</p>
+  <% } else { %>
+    <% donnees.forEach(d => { %>
+      <div class="card">
+        <h3><%= d.region %></h3>
+        <p><strong>Température :</strong> <%= d.temperature %>°C</p>
+        <p><strong>Humidité :</strong> <%= d.humidite %>%</p>
+        <p><strong>Pression :</strong> <%= d.pression %> hPa</p>
+        <% if (d.vent) { %>
+          <p><strong>Vent :</strong> <%= d.vent.vitesse %> m/s - <%= d.vent.direction %>°</p>
+        <% } else { %>
+          <p><strong>Vent :</strong> Donnée non disponible</p>
+        <% } %>
+        <p><strong>Condition :</strong> <%= d.condition %></p>
+        <p><strong>Description :</strong> <%= d.description %></p>
+        <p><strong>Date :</strong> <%= new Date(d.date).toLocaleString() %></p>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
